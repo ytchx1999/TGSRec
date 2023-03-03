@@ -114,7 +114,7 @@ def eval_users(tgrec, src, dst, ts, train_src, train_dst, args):
         batch_ts = []
         #batch_len = []
         batch_i = 0
-        for u, i, t in zip(src, dst, ts):
+        for u, i, t in tqdm(zip(src, dst, ts)):
             num_test_instances += 1
             if u not in train_src or i not in train_itemset or u not in pos_edges:
                 continue

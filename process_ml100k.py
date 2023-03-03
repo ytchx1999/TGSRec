@@ -101,6 +101,7 @@ def run(data_name):
     with open(i_map_file, 'w') as f:
         f.write(json.dumps(i_ind_id_map, sort_keys=True, indent=4))
 
+    df.sort_values("ts", inplace=True)
     new_df = reindex(df)
     
     #print(feat.shape)

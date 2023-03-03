@@ -24,5 +24,10 @@ Create the requirement with the requirements.txt
 ## ML-100K Dataset Execution
 ### Sample code to run
 ```
-python run_TGREC.py -d ml-100k --uniform --bs 600 --lr 0.001 --n_degree 30 --agg_method attn --attn_mode prod --gpu 0 --n_head 2 --n_layer 2 --prefix Video_Games_bce --node_dim 32 --time_dim 32 --drop_out 0.3 --reg 0.3 --negsampleeval 1000
+mkdir log
+mkdir saved_checkpoints/ml-100k
+mkdir saved_models/ml-100k
+mkdir processed
+
+python run_TGREC.py -d ml-100k --uniform --bs 600 --lr 0.001 --n_degree 30 --agg_method attn --attn_mode prod --gpu 2 --n_head 2 --n_layer 2 --prefix Video_Games_bce --node_dim 32 --time_dim 32 --drop_out 0.3 --reg 0.3 --negsampleeval 1000
 ```

@@ -36,7 +36,7 @@ parser.add_argument('--n_layer', type=int, default=2, help='number of network la
 parser.add_argument('--lr', type=float, default=0.005, help='learning rate')
 parser.add_argument('--drop_out', type=float, default=0.1, help='dropout probability')
 parser.add_argument('--reg', type=float, default=0.1, help='regularization')
-parser.add_argument('--gpu', type=int, default=0, help='idx for the gpu to use')
+parser.add_argument('--gpu', type=int, default=2, help='idx for the gpu to use')
 parser.add_argument('--node_dim', type=int, default=20, help='Dimentions of the node embedding')
 parser.add_argument('--time_dim', type=int, default=20, help='Dimentions of the time embedding')
 parser.add_argument('--agg_method', type=str, choices=['attn', 'lstm', 'mean'], help='local aggregation method', default='attn')
@@ -127,7 +127,7 @@ n_edges = data.num_total_edges
 print(n_edges, "n edges")
 tgan = TGRec(data.train_ngh_finder, n_nodes+1, args,
             num_layers=NUM_LAYER, use_time=USE_TIME, agg_method=AGG_METHOD, attn_mode=ATTN_MODE,
-            seq_len=SEQ_LEN, n_head=NUM_HEADS, drop_out=DROP_OUT, node_dim=NODE_DIM, time_dim=TIME_DIM)
+            seq_len=SEQ_LEN, n_head=NUM_HEADS, drop_out=DROP_OUT, node_dim=NODE_DIM, time_dim=TIME_DIM, device=GPU)
 optimizer = torch.optim.Adam(tgan.parameters(), lr=LEARNING_RATE)
 #criterion = torch.nn.BCELoss()
 tgan = tgan.to(device)
@@ -149,7 +149,7 @@ for epoch in range(NUM_EPOCH):
     acc, ap, f1, auc, m_loss = [], [], [], [], []
     np.random.shuffle(idx_list)
     logger.info('start {} epoch'.format(epoch))
-    for k in range(num_batch):
+    for k in tqdm(range(num_batch)):
 
         s_idx = k * BATCH_SIZE
         e_idx = min(num_instance - 1, s_idx + BATCH_SIZE)
@@ -210,7 +210,7 @@ for epoch in range(NUM_EPOCH):
     if np.mean(acc) == 0.5 and np.mean(auc) == 0.5 and np.mean(f1) == 0:
         break
     
-    if ((epoch+1) % 20 == 0 and (epoch+1) >= 200) or (epoch+1) == args.n_epoch:
+    if ((epoch+1) % 20 == 0 and (epoch+1) >= 200) or (epoch+1) == args.n_epoch : # 
         torch.save(
                 {
                     'model_state_dict': tgan.state_dict(),

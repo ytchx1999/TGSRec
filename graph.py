@@ -33,7 +33,7 @@ class NeighborFinder:
         off_set_l = [0]
         for i in range(len(adj_list)):
             curr = adj_list[i]
-            curr = sorted(curr, key=lambda x: x[1])
+            curr = sorted(curr, key=lambda x: x[2])
             n_idx_l.extend([x[0] for x in curr])
             e_idx_l.extend([x[1] for x in curr])
             n_ts_l.extend([x[2] for x in curr])

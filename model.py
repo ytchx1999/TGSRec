@@ -406,7 +406,7 @@ class AttnModel(torch.nn.Module):
 class TGRec(torch.nn.Module):
     def __init__(self, ngh_finder, n_nodes, args,
                  attn_mode='prod', use_time='time', agg_method='attn', node_dim=32, time_dim=32,
-                 num_layers=3, n_head=4, null_idx=0, num_heads=1, drop_out=0.1, seq_len=None):
+                 num_layers=3, n_head=4, null_idx=0, num_heads=1, drop_out=0.1, seq_len=None, device=0):
         super(TGRec, self).__init__()
         
         self.num_layers = num_layers 
@@ -420,6 +420,8 @@ class TGRec(torch.nn.Module):
         self.feat_dim = node_dim
         
         self.use_time = use_time
+
+        self.device = device
         
         #self.n_feat_dim = self.feat_dim
         #self.e_feat_dim = self.feat_dim
@@ -524,7 +526,7 @@ class TGRec(torch.nn.Module):
     def tem_conv(self, src_idx_l, cut_time_l, curr_layers, num_neighbors=20):
         assert(curr_layers >= 0)
         
-        device = torch.device('cuda:{}'.format(0))
+        device = torch.device('cuda:{}'.format(self.device))
     
         batch_size = len(src_idx_l)
         
